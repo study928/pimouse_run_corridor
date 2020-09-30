@@ -1,5 +1,5 @@
 #!usr/bin/env python
-#encoding: utf8
+
 import unittest, rostest, rospy, rosnode
 import time 
 
@@ -28,7 +28,7 @@ class WallStopTest(unittest.TestCase):
 
 if __name__ == '__main__':
     time.sleep(3)
-    rospy.init_node('travis_tst_wall_stop')
+    rospy.init_node('travis_test_wall_stop')
     rostest.rosrun('pimouse_run_corridor', 'travis_test_wall_stop', WallStopTest)
 
             
