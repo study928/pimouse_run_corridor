@@ -21,8 +21,8 @@ class WallTraceTest(unittest.TestCase):
         left, right = self.set_and_get(400,0,100,0) 
         self.assertTrue(left == right == 0,"can't stop")
 
-       # left, right = self.set_and_get(0,5,1000,0) 
-       # self.assertTrue(left == right != 0,"stop wrongly by side sensors")
+        #left, right = self.set_and_get(0,5,1000,0) 
+        #self.assertTrue(left == right != 0,"stop wrongly by side sensors")
         left, right = self.set_and_get(0,5,1000,0) #side direction is not a trigger of stop
         self.assertTrue(left == right != 0,"stop wrongly by side sensors")
     

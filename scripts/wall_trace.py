@@ -1,12 +1,12 @@
 #!/usr/bin/env python
+#encoding: utf-8
 
 #motors.py
 #Copyright (c) 2016 Ryuichi Ueda <ryuichiueda@gmail.com>
 #This software is released under the MIT License.
 #http://opensource.org/licenses/mit-license.php
 
-import rospy,copy
-import math
+import rospy,copy,math
 from geometry_msgs.msg import Twist
 from std_srvs.srv import Trigger, TriggerResponse
 from pimouse_ros.msg import LightSensorValues
@@ -24,25 +24,30 @@ class WallTrace():
     def run(self):
         rate = rospy.Rate(20)
         data = Twist()
-        
+
         accel = 0.02
+        data.linear.x = 0.0
+        data.angular.z = 0
         while not rospy.is_shutdown():
-            s = self.sensor_values
             data.linear.x += accel
 
-            if self.sensor_values.sum_all >= 50:
+            if self.sensor_values.sum_forward > 50:
                 data.linear.x = 0.0
             elif data.linear.x <= 0.2:
                 data.linear.x = 0.2
             elif data.linear.x >= 0.8:
-                data.linear.x =0.8
+                data.linear.x = 0.8
 
             if data.linear.x < 0.2:
                 data.angular.z = 0.0
+            elif self.sensor_values.left_side < 10:
+                data.angular.z = 0.0
             else:
                 target = 50
-                error = (target - s.left_side)/50.0
-                data.angular.z = error*3*math.pi/180.0
+                #1cm近づくと値がだいたい50増える
+                error = (target - self.sensor_values.left_side)/50.0
+                #1cmあたり3[deg/s]変化をつける
+                data.angular.z = error * 3 * math.pi / 180.0
 
             self.cmd_vel.publish(data)
             rate.sleep()
