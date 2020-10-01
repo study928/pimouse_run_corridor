@@ -22,7 +22,7 @@ class WallTraceTest(unittest.TestCase):
         self.assertTrue(left == right == 0,"can't stop")
 
         left, right = self.set_and_get(0,5,1000,0) 
-        self.assrtTrue(left == right != 0,"stop wrongly by side sensors")
+        self.assertTrue(left == right != 0,"stop wrongly by side sensors")
 
         left, right = self.set_and_get(0,10,0,0) 
         self.assertTrue(left < right, "don't curve to left")
